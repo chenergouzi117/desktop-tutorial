@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>在线考试 - 答题页面</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h2>在线考试系统</h2>
+    <nav>
+      <a href="/admin.html">出题页</a>
+      <a class="active" href="/exam.html">答题页</a>
+      <a href="/stats.html">统计页</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <label>考生姓名</label>
+      <input id="participantName" placeholder="请输入姓名（用于成绩统计）" />
+      <p id="status" class="status">等待考试开始...</p>
+      <p class="timer" id="timer">--</p>
+    </section>
+
+    <section class="card" id="questionWrap" style="display:none;">
+      <h3 id="qTitle"></h3>
+      <div id="optionList"></div>
+      <button id="submitBtn" type="button" style="margin-top: 12px;">提交本题答案</button>
+      <p id="submitMessage" class="status"></p>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const statusEl = document.getElementById('status');
+    const timerEl = document.getElementById('timer');
+    const qTitle = document.getElementById('qTitle');
+    const optionList = document.getElementById('optionList');
+    const questionWrap = document.getElementById('questionWrap');
+    const participantName = document.getElementById('participantName');
+    const submitMessage = document.getElementById('submitMessage');
+    const submitBtn = document.getElementById('submitBtn');
+
+    let currentQuestion = null;
+    let endAt = null;
+
+    function renderQuestion(question) {
+      optionList.innerHTML = '';
+      qTitle.textContent = question.title;
+
+      question.options.forEach((opt, idx) => {
+        const label = document.createElement('label');
+        label.className = 'question-item';
+        label.style.display = 'flex';
+        label.style.gap = '8px';
+        label.style.alignItems = 'center';
+        label.innerHTML = `<input type="radio" name="answer" value="${opt}" ${idx === 0 ? 'checked' : ''} /> ${opt}`;
+        optionList.appendChild(label);
+      });
+    }
+
+    async function submitAnswer() {
+      if (!currentQuestion) return;
+      const checked = document.querySelector('input[name="answer"]:checked');
+      if (!checked) {
+        submitMessage.textContent = '请先勾选一个答案';
+        submitMessage.style.color = '#cc2442';
+        return;
+      }
+
+      const resp = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          participantName: participantName.value,
+          questionId: currentQuestion.id,
+          answer: checked.value,
+        }),
+      });
+      const data = await resp.json();
+      submitMessage.textContent = data.message;
+      submitMessage.style.color = resp.ok ? '#176233' : '#cc2442';
+    }
+
+    function tick() {
+      if (!endAt) {
+        timerEl.textContent = '--';
+        return;
+      }
+      const remain = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
+      timerEl.textContent = `剩余 ${remain}s`;
+    }
+
+    socket.on('exam_state', (payload) => {
+      if (!payload.started) {
+        statusEl.textContent = '等待管理员开始考试...';
+        questionWrap.style.display = 'none';
+        currentQuestion = null;
+        endAt = null;
+        return;
+      }
+
+      if (payload.finished) {
+        statusEl.textContent = '考试结束，感谢参与';
+        questionWrap.style.display = 'none';
+        currentQuestion = null;
+        endAt = null;
+        return;
+      }
+
+      statusEl.textContent = `正在作答第 ${payload.currentQuestionIndex + 1}/${payload.totalQuestions} 题（全员同步）`;
+      currentQuestion = payload.currentQuestion;
+      endAt = payload.questionEndAt;
+      questionWrap.style.display = 'block';
+      submitMessage.textContent = '';
+      renderQuestion(currentQuestion);
+      tick();
+    });
+
+    submitBtn.addEventListener('click', submitAnswer);
+    setInterval(tick, 500);
+  </script>
+</body>
+</html>

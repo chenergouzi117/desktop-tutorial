@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>在线考试 - 出题页面</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h2>在线考试系统</h2>
+    <nav>
+      <a class="active" href="/admin.html">出题页</a>
+      <a href="/exam.html">答题页</a>
+      <a href="/stats.html">统计页</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h3>添加题目</h3>
+      <div class="row">
+        <div>
+          <label>题目类型</label>
+          <select id="qType">
+            <option value="truefalse">判断题</option>
+            <option value="single">选择题</option>
+          </select>
+        </div>
+        <div>
+          <label>答题限时（秒）</label>
+          <input id="qDuration" type="number" min="10" max="30" value="10" />
+        </div>
+      </div>
+
+      <label>题目内容</label>
+      <textarea id="qTitle" rows="2" placeholder="输入题干"></textarea>
+
+      <div id="singleOptionsWrap" style="display:none;">
+        <label>选择题选项（每行一个）</label>
+        <textarea id="qOptions" rows="4" placeholder="例如：\nA. 选项一\nB. 选项二"></textarea>
+      </div>
+
+      <label>正确答案（勾选）</label>
+      <div id="answerSelector" class="question-item"></div>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="addQuestionBtn" type="button">加入题库</button>
+      </div>
+      <p class="muted">每道题可设置 10~30 秒限时，开始考试后按设置自动切题，全员同步。</p>
+    </section>
+
+    <section class="card">
+      <h3>当前题库</h3>
+      <div id="questionList"></div>
+      <div class="row" style="margin-top:10px;">
+        <button id="saveBtn" class="secondary" type="button">保存题库到服务端</button>
+        <button id="startBtn" type="button">开始考试（同步发布）</button>
+      </div>
+      <p id="message" class="status"></p>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const questions = [];
+
+    const qType = document.getElementById('qType');
+    const qDuration = document.getElementById('qDuration');
+    const qTitle = document.getElementById('qTitle');
+    const qOptions = document.getElementById('qOptions');
+    const singleOptionsWrap = document.getElementById('singleOptionsWrap');
+    const questionList = document.getElementById('questionList');
+    const message = document.getElementById('message');
+    const answerSelector = document.getElementById('answerSelector');
+
+    function currentOptionsByInput() {
+      if (qType.value === 'truefalse') {
+        return ['正确', '错误'];
+      }
+      return qOptions.value.split('\n').map(v => v.trim()).filter(Boolean);
+    }
+
+    function renderAnswerSelector() {
+      const options = currentOptionsByInput();
+      answerSelector.innerHTML = '';
+
+      if (!options.length) {
+        answerSelector.innerHTML = '<p class="muted">请先填写选项后再选择正确答案</p>';
+        return;
+      }
+
+      options.forEach((option, index) => {
+        const label = document.createElement('label');
+        label.style.display = 'flex';
+        label.style.gap = '8px';
+        label.style.alignItems = 'center';
+        label.style.fontWeight = '500';
+        label.innerHTML = `<input type="radio" name="correctAnswer" value="${option}" ${index === 0 ? 'checked' : ''} /> ${option}`;
+        answerSelector.appendChild(label);
+      });
+    }
+
+    qType.addEventListener('change', () => {
+      singleOptionsWrap.style.display = qType.value === 'single' ? 'block' : 'none';
+      renderAnswerSelector();
+    });
+
+    qOptions.addEventListener('input', () => {
+      if (qType.value === 'single') {
+        renderAnswerSelector();
+      }
+    });
+
+    function renderQuestions() {
+      questionList.innerHTML = '';
+      if (!questions.length) {
+        questionList.innerHTML = '<p class="muted">还没有题目，请先添加。</p>';
+        return;
+      }
+
+      questions.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = 'question-item';
+        div.innerHTML = `<strong>${index + 1}. [${q.type === 'truefalse' ? '判断' : '选择'}] ${q.title}</strong>
+          <div class="muted">限时：${q.durationSec}s；答案：${q.correctAnswer}</div>
+          <div class="muted">选项：${q.options.join(' / ')}</div>`;
+        questionList.appendChild(div);
+      });
+    }
+
+    document.getElementById('addQuestionBtn').addEventListener('click', () => {
+      const type = qType.value;
+      const title = qTitle.value.trim();
+      const durationSec = Number(qDuration.value);
+
+      if (!title) return alert('请输入题干');
+      if (durationSec < 10 || durationSec > 30) return alert('限时需在10-30秒');
+
+      const options = currentOptionsByInput();
+      if (type === 'single' && options.length < 2) {
+        return alert('选择题至少要2个选项');
+      }
+
+      const checked = document.querySelector('input[name="correctAnswer"]:checked');
+      if (!checked) return alert('请先勾选正确答案');
+
+      questions.push({
+        id: `q-${questions.length + 1}`,
+        type,
+        title,
+        durationSec,
+        options,
+        correctAnswer: checked.value,
+      });
+
+      qTitle.value = '';
+      qOptions.value = '';
+      renderAnswerSelector();
+      renderQuestions();
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      const resp = await fetch('/api/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questions }),
+      });
+      const data = await resp.json();
+      message.textContent = data.message;
+      message.style.color = resp.ok ? '#176233' : '#cc2442';
+    });
+
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      const resp = await fetch('/api/exam/start', { method: 'POST' });
+      const data = await resp.json();
+      message.textContent = data.message;
+      message.style.color = resp.ok ? '#176233' : '#cc2442';
+    });
+
+    socket.on('exam_state', (payload) => {
+      if (payload.started && !payload.finished) {
+        message.textContent = `考试进行中：第 ${payload.currentQuestionIndex + 1}/${payload.totalQuestions} 题`;
+        message.style.color = '#1b3f9e';
+      }
+      if (payload.finished) {
+        message.textContent = '考试已结束';
+        message.style.color = '#176233';
+      }
+    });
+
+    renderAnswerSelector();
+    renderQuestions();
+  </script>
+</body>
+</html>
