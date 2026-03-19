@@ -1,0 +1,9 @@
+services:
+  conduit-map:
+    build: .
+    container_name: conduit-map
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai

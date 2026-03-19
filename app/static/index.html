@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>通信管网租赁可视化系统</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <p class="eyebrow">Telecom Asset GIS</p>
+          <h1>通信管网租赁可视化系统</h1>
+          <p class="subtitle">支持管道、合同、人井、孔位状态与资产数据维护。</p>
+        </div>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>筛选器</h2>
+            <button id="resetFilters" class="ghost-button" type="button">重置</button>
+          </div>
+          <label for="statusFilter">租赁状态</label>
+          <select id="statusFilter">
+            <option value="all">全部</option>
+            <option value="low">低租赁率（&lt; 50%）</option>
+            <option value="medium">中租赁率（50% - 80%）</option>
+            <option value="high">高租赁率（&gt; 80%）</option>
+          </select>
+          <label for="tenantKeyword">承租方关键字</label>
+          <input id="tenantKeyword" type="text" placeholder="例如：华城 / 星联" />
+          <label class="checkbox-row">
+            <input id="warningOnly" type="checkbox" />
+            <span>仅显示 90 天内到期预警</span>
+          </label>
+          <button id="applyFilters" class="primary-button" type="button">应用筛选</button>
+          <p class="hint">线表示管道，人井以圆点显示。点击管道查看合同，点击人井查看孔位占用。</p>
+        </section>
+
+        <section class="panel">
+          <h2>图例说明</h2>
+          <ul class="legend">
+            <li><span class="swatch green"></span>租赁率 &lt; 50%</li>
+            <li><span class="swatch yellow"></span>租赁率 50% - 80%</li>
+            <li><span class="swatch red"></span>租赁率 &gt; 80%</li>
+            <li><span class="manhole-swatch"></span>人井点位</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>汇总统计</h2>
+          <dl id="summaryCards" class="stats-grid"></dl>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading compact">
+            <h2>当前管段</h2>
+            <span id="resultCount" class="badge">0</span>
+          </div>
+          <div id="segmentList" class="segment-list"></div>
+        </section>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <h2>管网地图</h2>
+            <p id="requestState" class="topbar-text">正在加载数据...</p>
+          </div>
+          <div class="topbar-actions">
+            <a href="/manage">数据上传 / 批量修改</a>
+            <a href="/api/map-data" target="_blank" rel="noreferrer">查看地图数据</a>
+            <a href="/docs" target="_blank" rel="noreferrer">API 文档</a>
+          </div>
+        </header>
+        <section class="map-panel">
+          <div id="map"></div>
+        </section>
+      </main>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

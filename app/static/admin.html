@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>资产数据维护</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body class="admin-body">
+    <main class="admin-layout">
+      <section class="admin-header panel-light">
+        <div>
+          <p class="eyebrow">Asset Admin</p>
+          <h1>资产数据上传 / 批量修改</h1>
+          <p class="subtitle-dark">支持上传 JSON 文件、在线编辑完整资产数据、下载当前数据模板。</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="/">返回地图</a>
+          <a href="/api/assets/full" target="_blank" rel="noreferrer">查看当前 JSON</a>
+        </div>
+      </section>
+
+      <section class="panel-light admin-grid">
+        <div>
+          <h2>方式 1：上传 JSON 文件</h2>
+          <p>上传格式需为完整资产包，包含 `conduits` 和 `manholes` 两个数组。</p>
+          <form id="uploadForm" class="stack-form">
+            <input id="jsonFile" type="file" accept="application/json,.json" />
+            <button class="primary-button" type="submit">上传并覆盖当前数据</button>
+          </form>
+        </div>
+        <div>
+          <h2>方式 2：批量修改 JSON</h2>
+          <p>点击“加载当前数据”后，可直接修改 JSON 文本，再保存回系统。</p>
+          <div class="admin-actions-row">
+            <button id="loadData" class="ghost-button dark" type="button">加载当前数据</button>
+            <button id="downloadData" class="ghost-button dark" type="button">下载当前数据</button>
+            <button id="saveData" class="primary-button compact" type="button">保存修改</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-light">
+        <h2>完整资产 JSON</h2>
+        <textarea id="jsonEditor" class="json-editor" spellcheck="false"></textarea>
+        <p id="adminMessage" class="admin-message">请先加载当前数据或上传文件。</p>
+      </section>
+
+      <section class="panel-light">
+        <h2>格式说明</h2>
+        <pre class="json-example">{
+  "conduits": [
+    {
+      "id": "CD-001",
+      "road_name": "科技大道西段",
+      "coordinates": [[116.3871, 39.9075], [116.3928, 39.9092]],
+      "total_cores": 12,
+      "occupied_cores": 4,
+      "tenant_info": {
+        "primary_tenant": "星联通信",
+        "secondary_tenants": ["城域宽带"],
+        "contract_end": "2026-09-30",
+        "warning_level": "正常"
+      },
+      "contracts": [
+        {
+          "contract_id": "HT-2026-001",
+          "lessee": "星联通信",
+          "leased_cores": [1, 2, 3],
+          "start_date": "2025-10-01",
+          "end_date": "2026-09-30",
+          "status": "履约中",
+          "color": "#2563eb"
+        }
+      ],
+      "manhole_ids": ["MH-001"]
+    }
+  ],
+  "manholes": [
+    {
+      "id": "MH-001",
+      "name": "科技大道 1# 人井",
+      "coordinates": [116.3895, 39.9082],
+      "total_cores": 12,
+      "occupied_cores": 4,
+      "control_status": "正常",
+      "connected_conduit_ids": ["CD-001"],
+      "cores": [
+        {"index": 1, "status": "occupied", "tenant": "星联通信", "color": "#2563eb"},
+        {"index": 2, "status": "available", "tenant": "", "color": "#cbd5e1"}
+      ]
+    }
+  ]
+}</pre>
+      </section>
+    </main>
+    <script src="/static/admin.js"></script>
+  </body>
+</html>

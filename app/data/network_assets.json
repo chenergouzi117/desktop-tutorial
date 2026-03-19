@@ -1,0 +1,277 @@
+{
+  "conduits": [
+    {
+      "id": "CD-001",
+      "road_name": "科技大道西段",
+      "coordinates": [[116.3871, 39.9075], [116.3928, 39.9092], [116.3984, 39.9115]],
+      "total_cores": 12,
+      "occupied_cores": 4,
+      "tenant_info": {
+        "primary_tenant": "星联通信",
+        "secondary_tenants": ["城域宽带"],
+        "contract_end": "2026-09-30",
+        "warning_level": "正常"
+      },
+      "contracts": [
+        {
+          "contract_id": "HT-2026-001",
+          "lessee": "星联通信",
+          "leased_cores": [1, 2, 3],
+          "start_date": "2025-10-01",
+          "end_date": "2026-09-30",
+          "status": "履约中",
+          "color": "#2563eb"
+        },
+        {
+          "contract_id": "HT-2026-002",
+          "lessee": "城域宽带",
+          "leased_cores": [4],
+          "start_date": "2025-11-01",
+          "end_date": "2026-08-31",
+          "status": "履约中",
+          "color": "#f97316"
+        }
+      ],
+      "manhole_ids": ["MH-001", "MH-002"]
+    },
+    {
+      "id": "CD-002",
+      "road_name": "创新一路",
+      "coordinates": [[116.4016, 39.913], [116.4082, 39.9141], [116.4148, 39.9156]],
+      "total_cores": 24,
+      "occupied_cores": 16,
+      "tenant_info": {
+        "primary_tenant": "华城光网",
+        "secondary_tenants": ["云桥数据", "捷讯科技"],
+        "contract_end": "2026-05-15",
+        "warning_level": "90天内到期"
+      },
+      "contracts": [
+        {
+          "contract_id": "HT-2026-003",
+          "lessee": "华城光网",
+          "leased_cores": [1, 2, 3, 4, 5, 6, 7, 8],
+          "start_date": "2025-05-16",
+          "end_date": "2026-05-15",
+          "status": "待续签",
+          "color": "#0f766e"
+        },
+        {
+          "contract_id": "HT-2026-004",
+          "lessee": "云桥数据",
+          "leased_cores": [9, 10, 11, 12],
+          "start_date": "2025-06-01",
+          "end_date": "2026-05-01",
+          "status": "履约中",
+          "color": "#7c3aed"
+        },
+        {
+          "contract_id": "HT-2026-005",
+          "lessee": "捷讯科技",
+          "leased_cores": [13, 14, 15, 16],
+          "start_date": "2025-06-15",
+          "end_date": "2026-04-20",
+          "status": "即将到期",
+          "color": "#dc2626"
+        }
+      ],
+      "manhole_ids": ["MH-002", "MH-003"]
+    },
+    {
+      "id": "CD-003",
+      "road_name": "枢纽北路",
+      "coordinates": [[116.3775, 39.9038], [116.3834, 39.9017], [116.3893, 39.8998]],
+      "total_cores": 18,
+      "occupied_cores": 16,
+      "tenant_info": {
+        "primary_tenant": "国讯网络",
+        "secondary_tenants": ["数联云", "铁塔服务"],
+        "contract_end": "2026-04-10",
+        "warning_level": "30天内重点预警"
+      },
+      "contracts": [
+        {
+          "contract_id": "HT-2026-006",
+          "lessee": "国讯网络",
+          "leased_cores": [1, 2, 3, 4, 5, 6, 7, 8],
+          "start_date": "2025-04-11",
+          "end_date": "2026-04-10",
+          "status": "即将到期",
+          "color": "#2563eb"
+        },
+        {
+          "contract_id": "HT-2026-007",
+          "lessee": "数联云",
+          "leased_cores": [9, 10, 11, 12],
+          "start_date": "2025-05-01",
+          "end_date": "2026-04-01",
+          "status": "即将到期",
+          "color": "#14b8a6"
+        },
+        {
+          "contract_id": "HT-2026-008",
+          "lessee": "铁塔服务",
+          "leased_cores": [13, 14, 15, 16],
+          "start_date": "2025-05-15",
+          "end_date": "2026-03-31",
+          "status": "重点预警",
+          "color": "#ef4444"
+        }
+      ],
+      "manhole_ids": ["MH-004", "MH-005"]
+    }
+  ],
+  "manholes": [
+    {
+      "id": "MH-001",
+      "name": "科技大道 1# 人井",
+      "coordinates": [116.3895, 39.9082],
+      "total_cores": 12,
+      "occupied_cores": 4,
+      "control_status": "正常",
+      "connected_conduit_ids": ["CD-001"],
+      "cores": [
+        {"index": 1, "status": "occupied", "tenant": "星联通信", "color": "#2563eb"},
+        {"index": 2, "status": "occupied", "tenant": "星联通信", "color": "#2563eb"},
+        {"index": 3, "status": "occupied", "tenant": "星联通信", "color": "#2563eb"},
+        {"index": 4, "status": "occupied", "tenant": "城域宽带", "color": "#f97316"},
+        {"index": 5, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 6, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 7, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 8, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 9, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 10, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 11, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 12, "status": "available", "tenant": "", "color": "#cbd5e1"}
+      ]
+    },
+    {
+      "id": "MH-002",
+      "name": "创新一路南口人井",
+      "coordinates": [116.4042, 39.9134],
+      "total_cores": 24,
+      "occupied_cores": 16,
+      "control_status": "有预警",
+      "connected_conduit_ids": ["CD-001", "CD-002"],
+      "cores": [
+        {"index": 1, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 2, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 3, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 4, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 5, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 6, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 7, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 8, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 9, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 10, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 11, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 12, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 13, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 14, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 15, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 16, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 17, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 18, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 19, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 20, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 21, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 22, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 23, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 24, "status": "available", "tenant": "", "color": "#cbd5e1"}
+      ]
+    },
+    {
+      "id": "MH-003",
+      "name": "创新一路北口人井",
+      "coordinates": [116.4118, 39.9149],
+      "total_cores": 24,
+      "occupied_cores": 16,
+      "control_status": "有预警",
+      "connected_conduit_ids": ["CD-002"],
+      "cores": [
+        {"index": 1, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 2, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 3, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 4, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 5, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 6, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 7, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 8, "status": "occupied", "tenant": "华城光网", "color": "#0f766e"},
+        {"index": 9, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 10, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 11, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 12, "status": "occupied", "tenant": "云桥数据", "color": "#7c3aed"},
+        {"index": 13, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 14, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 15, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 16, "status": "occupied", "tenant": "捷讯科技", "color": "#dc2626"},
+        {"index": 17, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 18, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 19, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 20, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 21, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 22, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 23, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 24, "status": "available", "tenant": "", "color": "#cbd5e1"}
+      ]
+    },
+    {
+      "id": "MH-004",
+      "name": "枢纽北路西侧人井",
+      "coordinates": [116.3815, 39.9024],
+      "total_cores": 18,
+      "occupied_cores": 16,
+      "control_status": "重点关注",
+      "connected_conduit_ids": ["CD-003"],
+      "cores": [
+        {"index": 1, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 2, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 3, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 4, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 5, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 6, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 7, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 8, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 9, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 10, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 11, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 12, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 13, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 14, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 15, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 16, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 17, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 18, "status": "available", "tenant": "", "color": "#cbd5e1"}
+      ]
+    },
+    {
+      "id": "MH-005",
+      "name": "枢纽北路东侧人井",
+      "coordinates": [116.3867, 39.9005],
+      "total_cores": 18,
+      "occupied_cores": 16,
+      "control_status": "重点关注",
+      "connected_conduit_ids": ["CD-003"],
+      "cores": [
+        {"index": 1, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 2, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 3, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 4, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 5, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 6, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 7, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 8, "status": "occupied", "tenant": "国讯网络", "color": "#2563eb"},
+        {"index": 9, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 10, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 11, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 12, "status": "occupied", "tenant": "数联云", "color": "#14b8a6"},
+        {"index": 13, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 14, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 15, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 16, "status": "occupied", "tenant": "铁塔服务", "color": "#ef4444"},
+        {"index": 17, "status": "available", "tenant": "", "color": "#cbd5e1"},
+        {"index": 18, "status": "available", "tenant": "", "color": "#cbd5e1"}
+      ]
+    }
+  ]
+}
