@@ -338,14 +338,14 @@ def get_map_data(
                         {
                             "contract_id": "HT-2026-001",
                             "lessee": "星联通信",
-                            "leased_cores": [1, 2, 3],
+                            "leased_cores": [1],
                             "start_date": "2025-10-01",
                             "end_date": "2026-09-30",
                             "status": "履约中",
                             "color": "#2563eb"
                         }
                     ],
-                    "manhole_ids": ["MH-001", "MH-002"]
+                    "manhole_ids": ["MH-001"]
                 }
             ],
             "manholes": [
@@ -353,8 +353,8 @@ def get_map_data(
                     "id": "MH-001",
                     "name": "科技大道 1# 人井",
                     "coordinates": [116.3895, 39.9082],
-                    "total_cores": 12,
-                    "occupied_cores": 4,
+                    "total_cores": 2,
+                    "occupied_cores": 1,
                     "control_status": "正常",
                     "connected_conduit_ids": ["CD-001"],
                     "cores": [
