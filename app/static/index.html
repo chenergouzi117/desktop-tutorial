@@ -15,21 +15,36 @@
   <body>
     <div class="layout">
       <aside class="sidebar">
-        <div>
+        <div class="brand-block">
+          <p class="eyebrow">Telecom Asset GIS</p>
           <h1>通信管网租赁可视化系统</h1>
-          <p class="subtitle">基于 OpenStreetMap、FastAPI 与 Leaflet 的轻量级雏形。</p>
+          <p class="subtitle">FastAPI + Leaflet + OpenStreetMap 的轻量化资产上图雏形。</p>
         </div>
 
         <section class="panel">
-          <h2>租赁状态筛选</h2>
-          <label for="statusFilter">按租赁状态显示：</label>
+          <div class="panel-heading">
+            <h2>筛选器</h2>
+            <button id="resetFilters" class="ghost-button" type="button">重置</button>
+          </div>
+
+          <label for="statusFilter">租赁状态</label>
           <select id="statusFilter">
             <option value="all">全部</option>
             <option value="low">低租赁率（&lt; 50%）</option>
             <option value="medium">中租赁率（50% - 80%）</option>
             <option value="high">高租赁率（&gt; 80%）</option>
           </select>
-          <p class="hint">颜色规则：绿色 = 低，黄色 = 中，红色 = 高。</p>
+
+          <label for="tenantKeyword">承租方关键字</label>
+          <input id="tenantKeyword" type="text" placeholder="例如：华城 / 星联" />
+
+          <label class="checkbox-row">
+            <input id="warningOnly" type="checkbox" />
+            <span>仅显示 90 天内到期预警</span>
+          </label>
+
+          <button id="applyFilters" class="primary-button" type="button">应用筛选</button>
+          <p class="hint">颜色表示租赁率，线宽表示总孔数，点击线段可查看详细资产信息。</p>
         </section>
 
         <section class="panel">
@@ -39,17 +54,36 @@
             <li><span class="swatch yellow"></span>租赁率 50% - 80%</li>
             <li><span class="swatch red"></span>租赁率 &gt; 80%</li>
           </ul>
-          <p class="hint">线宽代表总孔数（Cores），孔数越多，线条越粗。</p>
         </section>
 
         <section class="panel">
-          <h2>资产统计</h2>
-          <dl id="stats" class="stats-list"></dl>
+          <h2>汇总统计</h2>
+          <dl id="summaryCards" class="stats-grid"></dl>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading compact">
+            <h2>当前管段</h2>
+            <span id="resultCount" class="badge">0</span>
+          </div>
+          <div id="segmentList" class="segment-list"></div>
         </section>
       </aside>
 
-      <main class="map-wrapper">
-        <div id="map"></div>
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <h2>管网地图</h2>
+            <p id="requestState" class="topbar-text">正在加载数据...</p>
+          </div>
+          <div class="topbar-actions">
+            <a href="/api/conduits" target="_blank" rel="noreferrer">查看 GeoJSON</a>
+            <a href="/docs" target="_blank" rel="noreferrer">API 文档</a>
+          </div>
+        </header>
+        <section class="map-panel">
+          <div id="map"></div>
+        </section>
       </main>
     </div>
 
