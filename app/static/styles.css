@@ -1,0 +1,150 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --sidebar-bg: #0f172a;
+  --panel-bg: rgba(255, 255, 255, 0.08);
+  --text-light: #e5edf9;
+  --muted: #b8c4d9;
+  --border: #d9e1ef;
+  --surface: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: #e9eef6;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--sidebar-bg);
+  color: var(--text-light);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebar h1,
+.sidebar h2 {
+  margin: 0 0 10px;
+}
+
+.subtitle,
+.hint {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+select {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--text-light);
+}
+
+.legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+}
+
+.green { background: #2ca25f; }
+.yellow { background: #f0c419; }
+.red { background: #d7301f; }
+
+.stats-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+}
+
+.stats-list div {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.stats-list dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stats-list dd {
+  margin: 8px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.map-wrapper {
+  padding: 18px;
+}
+
+#map {
+  height: calc(100vh - 36px);
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(15, 23, 42, 0.16);
+}
+
+.popup-content h3 {
+  margin: 0 0 10px;
+}
+
+.popup-content p {
+  margin: 6px 0;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-wrapper {
+    padding-top: 0;
+  }
+
+  #map {
+    height: 70vh;
+    border-radius: 0;
+  }
+}

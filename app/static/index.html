@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>通信管网租赁可视化系统</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div>
+          <h1>通信管网租赁可视化系统</h1>
+          <p class="subtitle">基于 OpenStreetMap、FastAPI 与 Leaflet 的轻量级雏形。</p>
+        </div>
+
+        <section class="panel">
+          <h2>租赁状态筛选</h2>
+          <label for="statusFilter">按租赁状态显示：</label>
+          <select id="statusFilter">
+            <option value="all">全部</option>
+            <option value="low">低租赁率（&lt; 50%）</option>
+            <option value="medium">中租赁率（50% - 80%）</option>
+            <option value="high">高租赁率（&gt; 80%）</option>
+          </select>
+          <p class="hint">颜色规则：绿色 = 低，黄色 = 中，红色 = 高。</p>
+        </section>
+
+        <section class="panel">
+          <h2>图例说明</h2>
+          <ul class="legend">
+            <li><span class="swatch green"></span>租赁率 &lt; 50%</li>
+            <li><span class="swatch yellow"></span>租赁率 50% - 80%</li>
+            <li><span class="swatch red"></span>租赁率 &gt; 80%</li>
+          </ul>
+          <p class="hint">线宽代表总孔数（Cores），孔数越多，线条越粗。</p>
+        </section>
+
+        <section class="panel">
+          <h2>资产统计</h2>
+          <dl id="stats" class="stats-list"></dl>
+        </section>
+      </aside>
+
+      <main class="map-wrapper">
+        <div id="map"></div>
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
