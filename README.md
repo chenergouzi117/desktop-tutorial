@@ -161,23 +161,145 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 - 健康检查：`http://localhost:8000/api/health`
 - Swagger 文档：`http://localhost:8000/docs`
 
-## Docker Compose 一键部署到 VPS
+## 在 VPS 上部署（Docker Compose）
 
-确认 VPS 已安装 Docker 与 Docker Compose 插件。
+下面给出一套适合 **Ubuntu 22.04 / 24.04 VPS** 的实际部署步骤。如果你的 VPS 是 Debian，命令基本也一致。
 
-### 启动
+### 第 1 步：登录 VPS
 
 ```bash
-git clone <your-repo-url>
-cd desktop-tutorial
+ssh root@<你的VPS公网IP>
+```
+
+如果你不是 `root` 用户，也可以登录普通用户后再执行：
+
+```bash
+sudo -i
+```
+
+### 第 2 步：安装 Docker 和 Docker Compose 插件
+
+```bash
+apt update
+apt install -y ca-certificates curl gnupg
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
+echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu   $(. /etc/os-release && echo $VERSION_CODENAME) stable"   | tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt update
+apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+systemctl enable docker
+systemctl start docker
+```
+
+安装完成后可检查版本：
+
+```bash
+docker --version
+docker compose version
+```
+
+### 第 3 步：开放服务器端口
+
+如果你的 VPS 使用 `ufw` 防火墙，请放行 SSH 和应用端口：
+
+```bash
+ufw allow OpenSSH
+ufw allow 8000/tcp
+ufw enable
+ufw status
+```
+
+如果你的云厂商还有“安全组”，也需要在控制台放通 **TCP 8000**。
+
+### 第 4 步：拉取项目代码
+
+```bash
+cd /opt
+git clone <your-repo-url> desktop-tutorial
+cd /opt/desktop-tutorial
+```
+
+如果你已经有代码，只需要进入项目目录：
+
+```bash
+cd /opt/desktop-tutorial
+```
+
+### 第 5 步：启动服务
+
+```bash
 docker compose up -d --build
 ```
 
-### 查看状态
+首次启动会自动：
+
+- 构建 Python 镜像
+- 安装 `FastAPI` / `uvicorn`
+- 启动容器 `conduit-map`
+- 将宿主机 `8000` 端口映射到容器 `8000`
+
+### 第 6 步：检查部署状态
 
 ```bash
 docker compose ps
 docker compose logs -f conduit-map
+```
+
+如果你看到类似 `Uvicorn running on http://0.0.0.0:8000`，说明服务已正常启动。
+
+也可以直接在 VPS 本机测试：
+
+```bash
+curl http://127.0.0.1:8000/api/health
+curl http://127.0.0.1:8000/api/conduits
+```
+
+正常情况下会分别返回：
+
+```json
+{ "status": "ok" }
+```
+
+以及一份 GeoJSON `FeatureCollection` 数据。
+
+### 第 7 步：浏览器访问
+
+部署成功后可直接访问：
+
+- 主页面：`http://<你的VPS公网IP>:8000`
+- 健康检查：`http://<你的VPS公网IP>:8000/api/health`
+- GeoJSON 接口：`http://<你的VPS公网IP>:8000/api/conduits`
+- Swagger 文档：`http://<你的VPS公网IP>:8000/docs`
+
+---
+
+## 常用运维命令
+
+### 查看运行状态
+
+```bash
+docker compose ps
+```
+
+### 查看实时日志
+
+```bash
+docker compose logs -f conduit-map
+```
+
+### 重启服务
+
+```bash
+docker compose restart conduit-map
+```
+
+### 更新代码后重新部署
+
+```bash
+cd /opt/desktop-tutorial
+git pull
+docker compose up -d --build
 ```
 
 ### 停止服务
@@ -186,9 +308,54 @@ docker compose logs -f conduit-map
 docker compose down
 ```
 
-### 访问地址
+### 停止并删除镜像缓存（可选）
 
-- `http://<你的VPS公网IP>:8000`
+```bash
+docker compose down --rmi local
+```
+
+---
+
+## 推荐的上线方式
+
+### 方案 A：先直接暴露 8000 端口
+
+适合测试和演示，最简单：
+
+- 浏览器直接访问 `http://<你的VPS公网IP>:8000`
+- 不需要额外安装 Nginx
+
+### 方案 B：使用 Nginx 反向代理到 80 / 443 端口
+
+适合正式环境，推荐后续这样做：
+
+1. Nginx 对外提供 `80/443`
+2. Nginx 将请求反向代理到 `127.0.0.1:8000`
+3. 配合 Certbot 配置 HTTPS
+
+一个最简 Nginx 反向代理示例：
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+如果你后续需要，我还可以继续帮你补：
+
+- Nginx 配置文件
+- HTTPS（Let's Encrypt）配置
+- 域名部署方式
+- Systemd + Docker 开机自启方案
 
 ## 生产环境建议
 
