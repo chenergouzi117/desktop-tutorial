@@ -34,6 +34,7 @@
 │       ├── app.js               # 前端交互逻辑
 │       ├── index.html           # 页面结构
 │       └── styles.css           # 页面样式
+├── install_vps.sh              # VPS 一键安装脚本
 ├── main.py                      # FastAPI 入口
 ├── requirements.txt             # Python 依赖
 ├── Dockerfile                   # 镜像构建文件
@@ -163,7 +164,29 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 ## 在 VPS 上部署（Docker Compose）
 
-下面给出一套适合 **Ubuntu 22.04 / 24.04 VPS** 的实际部署步骤。如果你的 VPS 是 Debian，命令基本也一致。
+项目根目录已提供一键安装脚本 `install_vps.sh`，适合 **Ubuntu 22.04 / 24.04 / Debian** 服务器使用。
+
+### 推荐方式：直接执行一键安装脚本
+
+先把项目上传或拉取到 VPS，然后进入项目根目录执行：
+
+```bash
+cd /opt/desktop-tutorial
+chmod +x install_vps.sh
+sudo ./install_vps.sh
+```
+
+这个脚本会自动完成以下事情：
+
+- 检测当前系统是否为 Ubuntu / Debian
+- 自动安装 Docker 与 Docker Compose 插件（若尚未安装）
+- 自动放行 `8000/tcp`（如果系统安装了 `ufw`）
+- 自动执行 `docker compose up -d --build`
+- 输出最终访问地址与常用运维命令
+
+如果你想手动执行，也可以继续按下面的分步方式部署。
+
+### 手动方式（逐步执行）
 
 ### 第 1 步：登录 VPS
 
