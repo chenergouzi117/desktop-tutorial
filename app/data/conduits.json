@@ -1,0 +1,67 @@
+[
+  {
+    "id": "CD-001",
+    "road_name": "科技大道西段",
+    "coordinates": [[116.3871, 39.9075], [116.3928, 39.9092], [116.3984, 39.9115]],
+    "total_cores": 12,
+    "occupied_cores": 4,
+    "tenant_info": {
+      "primary_tenant": "星联通信",
+      "secondary_tenants": ["城域宽带"],
+      "contract_end": "2026-09-30",
+      "warning_level": "正常"
+    }
+  },
+  {
+    "id": "CD-002",
+    "road_name": "创新一路",
+    "coordinates": [[116.4016, 39.913], [116.4082, 39.9141], [116.4148, 39.9156]],
+    "total_cores": 24,
+    "occupied_cores": 16,
+    "tenant_info": {
+      "primary_tenant": "华城光网",
+      "secondary_tenants": ["云桥数据", "捷讯科技"],
+      "contract_end": "2026-05-15",
+      "warning_level": "90天内到期"
+    }
+  },
+  {
+    "id": "CD-003",
+    "road_name": "枢纽北路",
+    "coordinates": [[116.3775, 39.9038], [116.3834, 39.9017], [116.3893, 39.8998]],
+    "total_cores": 18,
+    "occupied_cores": 16,
+    "tenant_info": {
+      "primary_tenant": "国讯网络",
+      "secondary_tenants": ["数联云", "铁塔服务"],
+      "contract_end": "2026-04-10",
+      "warning_level": "30天内重点预警"
+    }
+  },
+  {
+    "id": "CD-004",
+    "road_name": "滨河支路",
+    "coordinates": [[116.3958, 39.8995], [116.4007, 39.8969], [116.4061, 39.8943]],
+    "total_cores": 6,
+    "occupied_cores": 2,
+    "tenant_info": {
+      "primary_tenant": "未出租",
+      "secondary_tenants": [],
+      "contract_end": "-",
+      "warning_level": "可继续招商"
+    }
+  },
+  {
+    "id": "CD-005",
+    "road_name": "产业中路",
+    "coordinates": [[116.4104, 39.9056], [116.4169, 39.9043], [116.4227, 39.9032]],
+    "total_cores": 30,
+    "occupied_cores": 26,
+    "tenant_info": {
+      "primary_tenant": "新云互联",
+      "secondary_tenants": ["东城专网"],
+      "contract_end": "2026-06-20",
+      "warning_level": "60天内关注"
+    }
+  }
+]
